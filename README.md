@@ -1,64 +1,64 @@
-# Hadoop MapReduce : analyse de ventes avec Python
+# Hadoop MapReduce: Sales Analysis with Python
 
-Analyse d'un fichier de plus de 4 millions de transactions de vente avec **MapReduce**, via **Hadoop Streaming** et des scripts **Python 3**.
+Analysis of a file of more than 4 million sales transactions using **MapReduce**, with **Hadoop Streaming** and **Python 3** scripts.
 
-Rapport de résultats : [docs/rapport.pdf](docs/rapport.pdf)
+Results report: [docs/rapport.pdf](docs/rapport.pdf)
 
-## Données
+## Data
 
-Le fichier `purchases.txt` contient une transaction par ligne, avec 6 champs séparés par des tabulations :
+The `purchases.txt` file contains one transaction per line, with 6 tab-separated fields:
 
-| Champ | Description | Exemple |
+| Field | Description | Example |
 |---|---|---|
-| `date` | Date de la transaction | 2012-12-31 |
-| `heure` | Heure de la transaction | 17:59 |
-| `magasin` | Ville du magasin | Norfolk |
-| `catégorie` | Catégorie du produit | Toys |
-| `montant` | Montant de la vente | 164.34 |
-| `paiement` | Mode de paiement | MasterCard |
+| `date` | Transaction date | 2012-12-31 |
+| `time` | Transaction time | 17:59 |
+| `store` | Store city | Norfolk |
+| `category` | Product category | Toys |
+| `amount` | Sale amount | 164.34 |
+| `payment` | Payment method | MasterCard |
 
-Le fichier est volumineux et n'est pas inclus dans ce dépôt. Place-le à la racine pour les tests locaux, ou sur HDFS pour les jobs Hadoop.
+The file is large and is not included in this repository. Place it at the project root for local tests, or on HDFS for Hadoop jobs.
 
-## Principe
+## Principle
 
 ```
-purchases.txt --> Mapper --> Shuffle et tri par clé --> Reducer --> Résultat
+purchases.txt --> Mapper --> Shuffle and sort by key --> Reducer --> Result
 ```
 
-Le mapper extrait une clé (magasin ou catégorie) et le montant. Hadoop regroupe les paires par clé, puis le reducer les agrège.
+The mapper extracts a key (store or category) and the amount. Hadoop groups the pairs by key, then the reducer aggregates them.
 
 ## Structure
 
 ```
 src/
-├── mapper_store.py     # magasin    <TAB> montant
-├── mapper_item.py      # catégorie  <TAB> montant
-├── reducer_sum.py      # somme par clé
-├── reducer_max.py      # maximum par clé
-└── reducer_total.py    # total des ventes et nombre de transactions
+├── mapper_store.py     # store     <TAB> amount
+├── mapper_item.py      # category  <TAB> amount
+├── reducer_sum.py      # sum per key
+├── reducer_max.py      # maximum per key
+└── reducer_total.py    # total sales and number of transactions
 docs/
 ├── rapport.pdf
 └── images/
 ```
 
-| Analyse | Mapper | Reducer |
+| Analysis | Mapper | Reducer |
 |---|---|---|
-| Ventes par magasin | `mapper_store.py` | `reducer_sum.py` |
-| Ventes par catégorie | `mapper_item.py` | `reducer_sum.py` |
-| Vente maximale par magasin | `mapper_store.py` | `reducer_max.py` |
-| Total général et nombre de ventes | `mapper_store.py` | `reducer_total.py` |
+| Sales per store | `mapper_store.py` | `reducer_sum.py` |
+| Sales per category | `mapper_item.py` | `reducer_sum.py` |
+| Highest sale per store | `mapper_store.py` | `reducer_max.py` |
+| Overall total and number of sales | `mapper_store.py` | `reducer_total.py` |
 
-## Utilisation
+## Usage
 
-**Test local sur un échantillon :**
+**Local test on a sample:**
 
 ```bash
 head -50 purchases.txt | python3 src/mapper_store.py | sort | python3 src/reducer_sum.py
 ```
 
-![Test local](docs/images/test_local.png)
+![Local test](docs/images/test_local.png)
 
-**Exécution sur Hadoop :**
+**Running on Hadoop:**
 
 ```bash
 hdfs dfs -mkdir -p myinput
@@ -74,23 +74,23 @@ hadoop jar $HADOOP_HOME/share/hadoop/tools/lib/hadoop-streaming-*.jar \
 hdfs dfs -cat joboutput_store_sales/part-00000
 ```
 
-Pour les autres analyses, change les scripts selon le tableau et le dossier de sortie (il ne doit pas exister). Le chemin du JAR dépend de l'installation Hadoop.
+For the other analyses, change the scripts according to the table and the output directory (it must not already exist). The JAR path depends on the Hadoop installation.
 
-## Résultats
+## Results
 
-| Question | Résultat |
+| Question | Result |
 |---|---|
-| Ventes du magasin de Buffalo | 10 001 941,19 |
-| Ventes de la catégorie Toys | 57 463 477,11 |
-| Ventes de la catégorie Consumer Electronics | 57 452 374,13 |
-| Vente maximale à Reno / Toledo / Chandler | 499,99 / 499,98 / 499,98 |
-| Total général des ventes | 1 034 457 953,26 |
-| Nombre total de transactions | 4 138 476 |
+| Sales of the Buffalo store | 10,001,941.19 |
+| Sales of the Toys category | 57,463,477.11 |
+| Sales of the Consumer Electronics category | 57,452,374.13 |
+| Highest sale in Reno / Toledo / Chandler | 499.99 / 499.98 / 499.98 |
+| Overall total sales | 1,034,457,953.26 |
+| Total number of transactions | 4,138,476 |
 
-![Ventes par catégorie](docs/images/ventes_categories.png)
+![Sales by category](docs/images/ventes_categories.png)
 
-![Total des ventes](docs/images/total_ventes.png)
+![Total sales](docs/images/total_ventes.png)
 
-## Auteur
+## Author
 
 Abdessamad Ait brahim, [@abdessamadaitbrahim](https://github.com/abdessamadaitbrahim)
