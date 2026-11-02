@@ -1,0 +1,20 @@
+# Données volumineuses (non versionnées)
+purchases*.txt
+*.csv
+part-0*
+
+# Secrets
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+env/
+venv/
+.venv/
+
+# IDE / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db   
