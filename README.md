@@ -8,10 +8,14 @@ Rapport de résultats : [docs/rapport.pdf](docs/rapport.pdf)
 
 Le fichier `purchases.txt` contient une transaction par ligne, avec 6 champs séparés par des tabulations :
 
-```
-date    heure    magasin    catégorie    montant    paiement
-2012-12-31    17:59    Norfolk    Toys    164.34    MasterCard
-```
+| Champ | Description | Exemple |
+|---|---|---|
+| `date` | Date de la transaction | 2012-12-31 |
+| `heure` | Heure de la transaction | 17:59 |
+| `magasin` | Ville du magasin | Norfolk |
+| `catégorie` | Catégorie du produit | Toys |
+| `montant` | Montant de la vente | 164.34 |
+| `paiement` | Mode de paiement | MasterCard |
 
 Le fichier est volumineux et n'est pas inclus dans ce dépôt. Place-le à la racine pour les tests locaux, ou sur HDFS pour les jobs Hadoop.
 
@@ -56,7 +60,7 @@ docs/
 head -50 purchases.txt | python3 src/mapper_store.py | sort | python3 src/reducer_sum.py
 ```
 
-![Test local](docs/images/test-local.png)
+![Test local](docs/images/test_local.png)
 
 **Exécution sur Hadoop :**
 
@@ -87,9 +91,9 @@ Pour les autres analyses, change les scripts selon le tableau et le dossier de s
 | Total général des ventes | 1 034 457 953,26 |
 | Nombre total de transactions | 4 138 476 |
 
-![Ventes par catégorie](docs/images/ventes-categories.png)
+![Ventes par catégorie](docs/images/ventes_categories.png)
 
-![Total des ventes](docs/images/total-ventes.png)
+![Total des ventes](docs/images/total_ventes.png)
 
 ## Auteur
 
