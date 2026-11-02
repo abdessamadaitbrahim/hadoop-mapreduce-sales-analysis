@@ -1,5 +1,16 @@
 # Hadoop MapReduce: Sales Analysis with Python
 
+[![Overview](https://img.shields.io/badge/Overview-2563EB?style=flat-square)](#overview)
+[![Data](https://img.shields.io/badge/Data-2563EB?style=flat-square)](#data)
+[![Principle](https://img.shields.io/badge/Principle-2563EB?style=flat-square)](#principle)
+[![Structure](https://img.shields.io/badge/Structure-2563EB?style=flat-square)](#structure)
+[![Usage](https://img.shields.io/badge/Usage-7C3AED?style=flat-square)](#usage)
+[![Results](https://img.shields.io/badge/Results-7C3AED?style=flat-square)](#results)
+[![Limitations](https://img.shields.io/badge/Limitations-DC2626?style=flat-square)](#limitations)
+[![Author](https://img.shields.io/badge/Author-F59E0B?style=flat-square)](#author)
+
+## Overview
+
 Analysis of a file of more than 4 million sales transactions using **MapReduce**, with **Hadoop Streaming** and **Python 3** scripts.
 
 Results report: [docs/rapport.pdf](docs/rapport.pdf)
@@ -90,6 +101,13 @@ For the other analyses, change the scripts according to the table and the output
 ![Sales by category](docs/images/ventes_categories.png)
 
 ![Total sales](docs/images/total_ventes.png)
+
+## Limitations
+
+- Floating-point sums produce artifacts (e.g. `168.70999999999998`); `decimal.Decimal` would fix this.
+- A non-numeric amount crashes the mapper (no `try/except`).
+- No combiner, so more network traffic during the shuffle.
+- `reducer_total.py` assumes a single reducer.
 
 ## Author
 
