@@ -91,13 +91,6 @@ Pour les autres analyses, change les scripts selon le tableau et le dossier de s
 
 ![Total des ventes](docs/images/total-ventes.png)
 
-## Limites
-
-- Les sommes en `float` produisent des artefacts (ex. `168.70999999999998`) : utiliser `decimal.Decimal`.
-- Un montant non numérique fait planter le mapper (pas de `try/except`).
-- Pas de combiner, donc plus de trafic réseau lors du shuffle.
-- `reducer_total.py` suppose un seul reducer.
-
 ## Auteur
 
 Abdessamad Ait brahim, [@abdessamadaitbrahim](https://github.com/abdessamadaitbrahim)
