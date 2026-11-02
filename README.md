@@ -21,12 +21,8 @@ Le fichier est volumineux et n'est pas inclus dans ce dépôt. Place-le à la ra
 
 ## Principe
 
-```mermaid
-flowchart LR
-    A[purchases.txt] --> B[Mapper]
-    B --> C[Shuffle et tri par clé]
-    C --> D[Reducer]
-    D --> E[Résultat]
+```
+purchases.txt --> Mapper --> Shuffle et tri par clé --> Reducer --> Résultat
 ```
 
 Le mapper extrait une clé (magasin ou catégorie) et le montant. Hadoop regroupe les paires par clé, puis le reducer les agrège.
